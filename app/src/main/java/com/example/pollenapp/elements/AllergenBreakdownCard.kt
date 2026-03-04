@@ -164,7 +164,7 @@ fun AllergenPreview() {
         )
     )
 
-    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.pollenapp.AppTheme(dynamicColor = false) {
         AllergenBreakdownCard(
             allergens = allergens,
             modifier = Modifier.padding(16.dp)

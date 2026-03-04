@@ -99,7 +99,7 @@ fun UserSensitivityInputCard(
 @Preview(showBackground = true)
 @Composable
 fun UserSensitivityInputCardPreview() {
-    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.pollenapp.AppTheme(dynamicColor = false) {
         UserSensitivityInputCard(
             modifier = Modifier.padding(16.dp)
         )

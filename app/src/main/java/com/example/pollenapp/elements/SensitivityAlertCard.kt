@@ -71,7 +71,7 @@ fun SensitivityAlertCard(
 @Preview(showBackground = true)
 @Composable
 fun SensitivityAlertCardPreview() {
-    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.pollenapp.AppTheme(dynamicColor = false) {
         SensitivityAlertCard(
             rating = "High",
             description = "Sensitivity levels are high today. Take precautions if you're spending time outdoors.",

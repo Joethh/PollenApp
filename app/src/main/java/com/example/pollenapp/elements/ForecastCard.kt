@@ -205,7 +205,7 @@ fun ForecastPreview() {
         )
     )
 
-    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.pollenapp.AppTheme(dynamicColor = false) {
         ForecastCard(
             forecasts = days,
             modifier = Modifier.padding(16.dp)

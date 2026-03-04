@@ -122,7 +122,7 @@ fun RatingBadge(aqi: Int) {
 @Preview(showBackground = true)
 @Composable
 fun HeaderPreview() {
-    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.pollenapp.AppTheme(dynamicColor = false) {
         Header("Swansea, UK", 55)
     }
 }

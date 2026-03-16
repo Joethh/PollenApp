@@ -15,11 +15,15 @@ class MainViewModel : ViewModel() {
 
     private val _allergens = MutableStateFlow<List<AllergenItem>>(emptyList())
     val allergens: StateFlow<List<AllergenItem>> = _allergens.asStateFlow()
+    
     private val _forecast = MutableStateFlow<List<Forecast>>(emptyList())
     val forecast: StateFlow<List<Forecast>> = _forecast.asStateFlow()
 
     private val _aqi = MutableStateFlow<Int>(0)
     val aqi: StateFlow<Int> = _aqi.asStateFlow()
+
+    private val _discomfortScore = MutableStateFlow<DiscomfortResponse?>(null)
+    val discomfortScore: StateFlow<DiscomfortResponse?> = _discomfortScore.asStateFlow()
 
     fun fetchDataForLocation(lat: Double, lon: Double) {
         getCurrentPollenLevels(lat, lon)
@@ -31,6 +35,11 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             val pollenData = pollenRepository.getCurrentPollenLevels(lat, lon)
             _allergens.value = pollenData
+            
+            if (pollenData.isNotEmpty()) {
+                val prediction = pollenRepository.getDiscomfortPrediction(pollenData)
+                _discomfortScore.value = prediction
+            }
         }
     }
 

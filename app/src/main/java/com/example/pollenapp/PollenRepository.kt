@@ -1,5 +1,6 @@
 package com.example.pollenapp
 
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SentimentNeutral
 import androidx.compose.material.icons.outlined.SentimentSatisfiedAlt
@@ -8,21 +9,56 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.pollenapp.elements.AllergenItem
 import com.example.pollenapp.elements.Forecast
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
 
 class PollenRepository {
 
-    private val api = RetroFitInstance().apiInterface
+    private val retrofitInstance = RetroFitInstance()
+    private val openMeteoApi = retrofitInstance.openMeteoApi
+    private val customApi = retrofitInstance.customApi
+    private val auth = FirebaseAuth.getInstance()
 
     private data class AllergenConfig(
         val name: String,
         val values: List<Float?>
     )
 
+    data class PollenInstanceRequest(
+        val pollenLevels: List<Float>,
+        val discomfortRating: Float
+    )
+
+    suspend fun getDiscomfortPrediction(allergens: List<AllergenItem>): DiscomfortResponse? {
+        return try {
+            // Get current Firebase Auth Token
+            val token = auth.currentUser?.getIdToken(false)?.await()?.token ?: return null
+            
+            // Map current pollen levels to request model
+            val requestBody = PollenInstanceRequest(
+                pollenLevels = allergens.map { it.score },
+                discomfortRating = 5.0f // or whatever value you intend
+            )
+
+            // Call API
+            val response = customApi.getDiscomfortScore("Bearer $token", requestBody)
+            Log.d("API", "Got Response: " + response.toString())
+            
+            if (response.isSuccessful) {
+                Log.d("API", "Body: ${response.body()}")
+                response.body()
+            } else null
+        } catch (e: Exception) {
+            Log.e("API", "Failed to get prediction", e)
+            null
+        }
+    }
+
     // A forecast of the MAX forecasted value from each day.
     suspend fun getFourDayPollenForecast(lat: Double, lon: Double): List<Forecast> {
         return try {
-            val response = api.getHourlyPollen(lat, lon)
+            val response = openMeteoApi.getHourlyPollen(lat, lon)
             if (!response.isSuccessful) return emptyList()
 
             val hourly = response.body()?.hourly ?: return emptyList()
@@ -87,7 +123,7 @@ class PollenRepository {
     // Get the pollen levels for the current hour.
     suspend fun getCurrentPollenLevels(lat: Double, lon: Double): List<AllergenItem> {
         return try {
-            val response = api.getHourlyPollen(lat, lon)
+            val response = openMeteoApi.getHourlyPollen(lat, lon)
             if (!response.isSuccessful) return emptyList()
 
             val hourly = response.body()?.hourly ?: return emptyList()
@@ -127,7 +163,7 @@ class PollenRepository {
     // Get the European AQI for the current hour
     suspend fun getCurrentAqi(lat: Double, lon: Double): Int {
         return try {
-            val response = api.getHourlyPollen(lat, lon)
+            val response = openMeteoApi.getHourlyPollen(lat, lon)
             if (!response.isSuccessful) return 0
 
             val current = response.body()?.current ?: return 0

@@ -16,7 +16,7 @@ import com.example.pollenapp.RetroFitInstance
 @Composable
 fun DataDisplayCard() {
     var responseText by remember { mutableStateOf("Loading...") }
-
+/*
     LaunchedEffect(Unit) {
         try {
             val response = RetroFitInstance().apiInterface.getHourlyPollen(51.619450, -3.945775)
@@ -35,5 +35,5 @@ fun DataDisplayCard() {
             text = responseText,
             modifier = Modifier.padding(16.dp)
         )
-    }
+    } */
 }

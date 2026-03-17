@@ -26,29 +26,66 @@ class PollenRepository {
         val values: List<Float?>
     )
 
-    data class PollenInstanceRequest(
+    data class PollenUpdateRequest(
         val pollenLevels: List<Float>,
         val discomfortRating: Float
     )
 
-    suspend fun getDiscomfortPrediction(allergens: List<AllergenItem>): SensitivityAlert? {
+    data class PollenLevelsRequest(
+        val pollenLevels: List<Float>
+    )
+
+    suspend fun updateAndGetDiscomfortPrediction(allergens: List<AllergenItem>, userRating: Float): SensitivityAlert? {
         return try {
             // Get current Firebase Auth Token
             val token = auth.currentUser?.getIdToken(false)?.await()?.token ?: return null
             
             // Map current pollen levels to request model
-            val requestBody = PollenInstanceRequest(
+            val requestBody = PollenUpdateRequest(
                 pollenLevels = allergens.map { it.score },
-                discomfortRating = 5.0f // TODO: replace with input value
+                discomfortRating = userRating
             )
 
             // Call API
-            val response = customApi.getDiscomfortScore("Bearer $token", requestBody)
-            Log.d("API", "Got Response: $response")
+            val response = customApi.updateAndGetDiscomfortScore("Bearer $token", requestBody)
+            Log.d("API", "Got Prediction-Update Response: $response")
             
             if (response.isSuccessful) {
                 val predictionScore = response.body()?.prediction ?: 0f
                 
+                val message = when {
+                    predictionScore < 3f -> "Predicted sensitivity levels are low. You are unlikely to notice symptoms today!"
+                    predictionScore < 8f -> "Predicted sensitivity levels are moderate. Consider taking precautions if you're going outdoors."
+                    else -> "Predicted sensitivity levels are high today. Take precautions if you're spending time outdoors."
+                }
+
+                SensitivityAlert(
+                    rating = pollenRating(predictionScore),
+                    message = message,
+                    colour = pollenColor(predictionScore),
+                    icon = pollenIcon(predictionScore)
+                )
+            } else null
+        } catch (e: Exception) {
+            Log.e("API", "Failed to get prediction", e)
+            null
+        }
+    }
+
+    suspend fun getDiscomfortPrediction(allergens: List<AllergenItem>): SensitivityAlert? {
+        return try {
+            val token = auth.currentUser?.getIdToken(false)?.await()?.token ?: return null
+
+            val requestBody = PollenLevelsRequest(
+                pollenLevels = allergens.map { it.score }
+            )
+
+            val response = customApi.getDiscomfortScore("Bearer $token", requestBody)
+            Log.d("API", "Got Prediction-Only Response: $response")
+
+            if (response.isSuccessful) {
+                val predictionScore = response.body()?.prediction ?: 0f
+
                 val message = when {
                     predictionScore < 3f -> "Predicted sensitivity levels are low. You are unlikely to notice symptoms today!"
                     predictionScore < 8f -> "Predicted sensitivity levels are moderate. Consider taking precautions if you're going outdoors."

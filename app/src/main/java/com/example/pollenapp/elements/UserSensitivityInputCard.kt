@@ -28,7 +28,7 @@ import kotlin.math.roundToInt
 @Composable
 fun UserSensitivityInputCard(
     modifier: Modifier = Modifier,
-    onNavigateToFeedback: (Int) -> Unit = {}
+    onRatingSubmitted: (Int) -> Unit = {}
 ) {
     var sliderPosition by remember { mutableFloatStateOf(5f) }
 
@@ -86,7 +86,7 @@ fun UserSensitivityInputCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { onNavigateToFeedback(sliderPosition.roundToInt()) },
+                onClick = { onRatingSubmitted(sliderPosition.roundToInt()) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium
             ) {
@@ -99,7 +99,7 @@ fun UserSensitivityInputCard(
 @Preview(showBackground = true)
 @Composable
 fun UserSensitivityInputCardPreview() {
-    _root_ide_package_.com.example.pollenapp.AppTheme(dynamicColor = false) {
+    com.example.pollenapp.AppTheme(dynamicColor = false) {
         UserSensitivityInputCard(
             modifier = Modifier.padding(16.dp)
         )

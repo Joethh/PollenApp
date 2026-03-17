@@ -9,11 +9,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.pollenapp.DiscomfortResponse
 import com.example.pollenapp.elements.AllergenBreakdownCard
 import com.example.pollenapp.elements.AllergenItem
 import com.example.pollenapp.elements.DataDisplayCard
-import com.example.pollenapp.elements.DiscomfortTestCard
 import com.example.pollenapp.elements.Forecast
 import com.example.pollenapp.elements.ForecastCard
 import com.example.pollenapp.elements.Header
@@ -28,6 +26,7 @@ fun MainScreen(
     location: String,
     aqi: Int,
     discomfort: SensitivityAlert?,
+    onRatingSubmit: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold { padding ->
@@ -54,7 +53,7 @@ fun MainScreen(
                 item {
                     UserSensitivityInputCard(
                         modifier = modifier,
-                        onNavigateToFeedback = { /* Handle navigation */ }
+                        onRatingSubmitted = onRatingSubmit
                     ) 
                 }
 

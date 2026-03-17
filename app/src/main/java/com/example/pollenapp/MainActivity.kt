@@ -84,6 +84,7 @@ class MainActivity : ComponentActivity() {
                     location = locationName,
                     aqi = aqi,
                     discomfort = discomfort,
+                    onRatingSubmit = viewModel::submitUserSensitivity,
                     modifier = Modifier.padding(16.dp)
                 )
             }

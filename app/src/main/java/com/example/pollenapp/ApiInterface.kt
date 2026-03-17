@@ -15,8 +15,14 @@ interface ApiInterface {
     ): Response<OpenMeteoResponse>
 
     @POST("api/allergy/weights")
+    suspend fun updateAndGetDiscomfortScore(
+        @Header("Authorization") token: String,
+        @Body levels: PollenRepository.PollenUpdateRequest
+    ): Response<DiscomfortResponse>
+
+    @POST("api/allergy/predict")
     suspend fun getDiscomfortScore(
         @Header("Authorization") token: String,
-        @Body levels: PollenRepository.PollenInstanceRequest
+        @Body levels: PollenRepository.PollenLevelsRequest
     ): Response<DiscomfortResponse>
 }

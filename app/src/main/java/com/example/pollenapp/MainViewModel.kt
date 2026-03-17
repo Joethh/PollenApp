@@ -32,12 +32,22 @@ class MainViewModel : ViewModel() {
         getCurrentAqi(lat, lon)
     }
 
+    fun submitUserSensitivity(rating: Int) {
+        viewModelScope.launch {
+            val currentAllergens = _allergens.value
+            if (currentAllergens.isNotEmpty()) {
+                val prediction = pollenRepository.updateAndGetDiscomfortPrediction(currentAllergens, rating.toFloat())
+                _discomfortScore.value = prediction
+            }
+        }
+    }
+
     private fun getCurrentPollenLevels(lat: Double, lon: Double) {
         viewModelScope.launch {
             val pollenData = pollenRepository.getCurrentPollenLevels(lat, lon)
             _allergens.value = pollenData
             
-            if (pollenData.isNotEmpty()) {
+            if (pollenData.isNotEmpty() && _discomfortScore.value == null) {
                 val prediction = pollenRepository.getDiscomfortPrediction(pollenData)
                 _discomfortScore.value = prediction
             }

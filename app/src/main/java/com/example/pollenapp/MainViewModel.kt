@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pollenapp.elements.AllergenItem
 import com.example.pollenapp.elements.Forecast
+import com.example.pollenapp.elements.SensitivityAlert
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +23,8 @@ class MainViewModel : ViewModel() {
     private val _aqi = MutableStateFlow<Int>(0)
     val aqi: StateFlow<Int> = _aqi.asStateFlow()
 
-    private val _discomfortScore = MutableStateFlow<DiscomfortResponse?>(null)
-    val discomfortScore: StateFlow<DiscomfortResponse?> = _discomfortScore.asStateFlow()
+    private val _discomfortScore = MutableStateFlow<SensitivityAlert?>(null)
+    val discomfortScore: StateFlow<SensitivityAlert?> = _discomfortScore.asStateFlow()
 
     fun fetchDataForLocation(lat: Double, lon: Double) {
         getCurrentPollenLevels(lat, lon)

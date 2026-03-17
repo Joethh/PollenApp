@@ -17,6 +17,7 @@ import com.example.pollenapp.elements.DiscomfortTestCard
 import com.example.pollenapp.elements.Forecast
 import com.example.pollenapp.elements.ForecastCard
 import com.example.pollenapp.elements.Header
+import com.example.pollenapp.elements.SensitivityAlert
 import com.example.pollenapp.elements.SensitivityAlertCard
 import com.example.pollenapp.elements.UserSensitivityInputCard
 
@@ -26,7 +27,7 @@ fun MainScreen(
     allergens: List<AllergenItem>,
     location: String,
     aqi: Int,
-    discomfort: DiscomfortResponse?,
+    discomfort: SensitivityAlert?,
     modifier: Modifier = Modifier
 ) {
     Scaffold { padding ->
@@ -39,19 +40,13 @@ fun MainScreen(
             ) {
                 item { Spacer(Modifier.height(220.dp)) }
 
-                item { 
-                    DiscomfortTestCard(
-                        discomfort = discomfort,
-                        modifier = modifier
-                    )
-                }
-
-                item {
-                    SensitivityAlertCard(
-                        rating = "High",
-                        description = "Sensitivity levels are high today. Take precautions if you're spending time outdoors.",
-                        modifier = modifier
-                    )
+                if (discomfort != null) {
+                    item {
+                        SensitivityAlertCard(
+                            discomfort,
+                            modifier = modifier
+                        )
+                    }
                 }
 
                 item { AllergenBreakdownCard(allergens, modifier) }

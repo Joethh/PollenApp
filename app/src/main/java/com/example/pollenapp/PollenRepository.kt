@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.pollenapp.elements.AllergenItem
 import com.example.pollenapp.elements.Forecast
+import com.example.pollenapp.elements.SensitivityAlert
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
@@ -30,7 +31,7 @@ class PollenRepository {
         val discomfortRating: Float
     )
 
-    suspend fun getDiscomfortPrediction(allergens: List<AllergenItem>): DiscomfortResponse? {
+    suspend fun getDiscomfortPrediction(allergens: List<AllergenItem>): SensitivityAlert? {
         return try {
             // Get current Firebase Auth Token
             val token = auth.currentUser?.getIdToken(false)?.await()?.token ?: return null
@@ -38,16 +39,28 @@ class PollenRepository {
             // Map current pollen levels to request model
             val requestBody = PollenInstanceRequest(
                 pollenLevels = allergens.map { it.score },
-                discomfortRating = 5.0f // or whatever value you intend
+                discomfortRating = 5.0f // TODO: replace with input value
             )
 
             // Call API
             val response = customApi.getDiscomfortScore("Bearer $token", requestBody)
-            Log.d("API", "Got Response: " + response.toString())
+            Log.d("API", "Got Response: $response")
             
             if (response.isSuccessful) {
-                Log.d("API", "Body: ${response.body()}")
-                response.body()
+                val predictionScore = response.body()?.prediction ?: 0f
+                
+                val message = when {
+                    predictionScore < 3f -> "Predicted sensitivity levels are low. You are unlikely to notice symptoms today!"
+                    predictionScore < 8f -> "Predicted sensitivity levels are moderate. Consider taking precautions if you're going outdoors."
+                    else -> "Predicted sensitivity levels are high today. Take precautions if you're spending time outdoors."
+                }
+
+                SensitivityAlert(
+                    rating = pollenRating(predictionScore),
+                    message = message,
+                    colour = pollenColor(predictionScore),
+                    icon = pollenIcon(predictionScore)
+                )
             } else null
         } catch (e: Exception) {
             Log.e("API", "Failed to get prediction", e)
@@ -99,18 +112,12 @@ class PollenRepository {
 
                     val overallScore = maxAllergenValues.maxOrNull() ?: 0f
 
-                    val rating = when {
-                        overallScore < 3f -> "Low"
-                        overallScore < 7f -> "Medium"
-                        else -> "High"
-                    }
-
                     Forecast(
                         dayStr = date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() },
                         month = date.month.name.lowercase().replaceFirstChar { it.uppercase() },
                         dayInt = date.dayOfMonth,
                         score = overallScore,
-                        rating = rating,
+                        rating = pollenRating(overallScore),
                         icon = pollenIcon(overallScore)
                     )
                 }
@@ -185,8 +192,16 @@ class PollenRepository {
     private fun pollenIcon(score: Float): ImageVector {
         return when {
             score < 3f -> Icons.Outlined.SentimentSatisfiedAlt
-            score < 7f -> Icons.Outlined.SentimentNeutral
+            score < 8f -> Icons.Outlined.SentimentNeutral
             else -> Icons.Outlined.SentimentVeryDissatisfied
+        }
+    }
+
+    private fun pollenRating(score : Float): String {
+        return when {
+            score < 3f -> "Low"
+            score < 8f -> "Medium"
+            else -> "High"
         }
     }
 }

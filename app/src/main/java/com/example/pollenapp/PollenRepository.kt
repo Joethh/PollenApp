@@ -2,9 +2,12 @@ package com.example.pollenapp
 
 import android.util.Log
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Hiking
+import androidx.compose.material.icons.outlined.NaturePeople
+import androidx.compose.material.icons.outlined.SentimentDissatisfied
 import androidx.compose.material.icons.outlined.SentimentNeutral
 import androidx.compose.material.icons.outlined.SentimentSatisfiedAlt
-import androidx.compose.material.icons.outlined.SentimentVeryDissatisfied
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.pollenapp.elements.AllergenItem
@@ -60,7 +63,7 @@ class PollenRepository {
                 }
 
                 SensitivityAlert(
-                    rating = pollenRating(predictionScore),
+                    rating = sensitivityRating(predictionScore),
                     message = message,
                     colour = pollenColor(predictionScore),
                     icon = pollenIcon(predictionScore)
@@ -93,10 +96,10 @@ class PollenRepository {
                 }
 
                 SensitivityAlert(
-                    rating = pollenRating(predictionScore),
+                    rating = sensitivityRating(predictionScore),
                     message = message,
                     colour = pollenColor(predictionScore),
-                    icon = pollenIcon(predictionScore)
+                    icon = sensitivityIcon(predictionScore)
                 )
             } else null
         } catch (e: Exception) {
@@ -155,7 +158,7 @@ class PollenRepository {
                         dayInt = date.dayOfMonth,
                         score = overallScore,
                         rating = pollenRating(overallScore),
-                        icon = pollenIcon(overallScore)
+                        icon = sensitivityIcon(overallScore)
                     )
                 }
 
@@ -219,25 +222,51 @@ class PollenRepository {
     }
 
     private fun pollenColor(score: Float): Color {
-        val clamped = score.coerceIn(0f, 10f)
+        val normalizedScore = if (score > 10) score / 25 else score
+
+        val clamped = normalizedScore.coerceIn(0f, 10f)
         val fraction = clamped / 10f
-        val red = (255 * fraction).toInt()
-        val green = (255 * (1f - fraction)).toInt()
-        return Color(red, green, 0)
+
+        // Define muted start and end colours
+        val redStart   = 80
+        val redEnd   = 210
+        val greenStart = 160
+        val greenEnd = 60
+
+
+        val red   = (redStart   + (redEnd   - redStart)   * fraction).toInt()
+        val green = (greenStart + (greenEnd - greenStart)  * fraction).toInt()
+        return Color(red, green, 30)
     }
 
     private fun pollenIcon(score: Float): ImageVector {
         return when {
-            score < 3f -> Icons.Outlined.SentimentSatisfiedAlt
-            score < 8f -> Icons.Outlined.SentimentNeutral
-            else -> Icons.Outlined.SentimentVeryDissatisfied
+            score < 50f -> Icons.Outlined.SentimentSatisfiedAlt
+            score < 150 -> Icons.Outlined.SentimentNeutral
+            else -> Icons.Outlined.SentimentDissatisfied
+        }
+    }
+
+    private fun sensitivityIcon(score: Float): ImageVector {
+        return when {
+            score < 3f -> Icons.Outlined.Hiking
+            score < 8f -> Icons.Outlined.NaturePeople
+            else -> Icons.Outlined.Warning
+        }
+    }
+
+    private fun sensitivityRating(score : Float): String {
+        return when {
+            score < 3f -> "Low"
+            score < 8f -> "Medium"
+            else -> "High"
         }
     }
 
     private fun pollenRating(score : Float): String {
         return when {
-            score < 3f -> "Low"
-            score < 8f -> "Medium"
+            score < 50f -> "Low"
+            score < 150f -> "Medium"
             else -> "High"
         }
     }

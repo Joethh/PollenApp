@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">UITesting</string>
+    <string name="allergen_breakdown">Allergen Breakdown</string>
+    <string name="error_unable_to_fetch_allergen">Error: Unable to fetch current allergen levels.</string>
+    <string name="mg_m_c">µg/m</string>
+    <string name="weekly_forecast">Weekly Forecast</string>
+    <string name="error_unable_to_fetch_forecast">Error: Unable to fetch forecast.</string>
+    <string name="air_quality">Air Quality</string>
+    <string name="good">Good</string>
+    <string name="fair">Fair</string>
+    <string name="moderate">Moderate</string>
+    <string name="poor">Poor</string>
+    <string name="very_poor">Very Poor</string>
+    <string name="login">Login</string>
+    <string name="enter_your_email">Enter your Email</string>
+    <string name="password">Password</string>
+    <string name="enter_your_password">Enter your Password</string>
+    <string name="predicted_sensitivity_rating">Predicted Sensitivity Rating: %1$s</string>
+    <string name="how_are_you_feeling">How are you feeling?</string>
+    <string name="rate_your_current_sensitivity_level">Rate your current sensitivity level</string>
+    <string name="low">Low</string>
+    <string name="high">High</string>
+    <string name="submit_rating">Submit Rating</string>
 </resources>

@@ -20,11 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.example.pollenapp.R
 
 
 @Composable
@@ -32,8 +33,6 @@ fun Header(
     location: String,
     aqi: Int
 ) {
-
-
 
     val gradient = Brush.linearGradient(
         colors = listOf(
@@ -66,7 +65,7 @@ fun Header(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Air Quality",
+                text = stringResource(R.string.air_quality),
                 color = MaterialTheme.colorScheme.surfaceVariant
             )
 
@@ -95,11 +94,11 @@ fun Header(
 @Composable
 fun RatingBadge(aqi: Int) {
     val text = when {
-        aqi < 21 -> "Good"
-        aqi < 41 -> "Fair"
-        aqi < 61 -> "Moderate"
-        aqi < 81 -> "Poor"
-        else -> "Very Poor"
+        aqi < 21 -> stringResource(R.string.good)
+        aqi < 41 -> stringResource(R.string.fair)
+        aqi < 61 -> stringResource(R.string.moderate)
+        aqi < 81 -> stringResource(R.string.poor)
+        else -> stringResource(R.string.very_poor)
     }
 
     Box(

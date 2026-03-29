@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.pollenapp.R
 
 data class AllergenItem(
     val name: String,
@@ -57,7 +59,7 @@ fun AllergenBreakdownCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Allergen Breakdown",
+                text = stringResource(R.string.allergen_breakdown),
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -70,7 +72,7 @@ fun AllergenBreakdownCard(
                 }
             } else {
                 Text(
-                    text = "Error: Unable to fetch current allergen levels.",
+                    text = stringResource(R.string.error_unable_to_fetch_allergen),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -118,7 +120,7 @@ fun AllergenRow(item: AllergenItem) {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                             append("${item.score} ")
                         }
-                        append("µg/m")
+                        append(stringResource(R.string.mg_m_c))
                         withStyle(
                             style = SpanStyle(
                                 baselineShift = BaselineShift.Superscript,

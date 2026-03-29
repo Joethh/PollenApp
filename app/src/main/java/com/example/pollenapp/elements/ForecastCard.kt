@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.pollenapp.R
 
 data class Forecast(
     val dayStr: String,
@@ -55,7 +57,7 @@ fun ForecastCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Weekly Forecast",
+                text = stringResource(R.string.weekly_forecast),
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -68,7 +70,7 @@ fun ForecastCard(
                 }
             } else {
                 Text(
-                    text = "Error: Unable to fetch forecast.",
+                    text = stringResource(R.string.error_unable_to_fetch_forecast),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -125,7 +127,7 @@ fun DayForecastCard(
                             withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                                 append("${item.score} ")
                             }
-                            append("µg/m")
+                            append(stringResource(R.string.mg_m_c))
                             withStyle(
                                 style = SpanStyle(
                                     baselineShift = BaselineShift.Superscript,

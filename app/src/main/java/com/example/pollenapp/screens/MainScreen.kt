@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.pollenapp.elements.AllergenBreakdownCard
 import com.example.pollenapp.elements.AllergenItem
-import com.example.pollenapp.elements.DataDisplayCard
 import com.example.pollenapp.elements.Forecast
 import com.example.pollenapp.elements.ForecastCard
 import com.example.pollenapp.elements.Header
@@ -58,8 +57,6 @@ fun MainScreen(
                 }
 
                 item { ForecastCard(forecasts, modifier) }
-
-                item { DataDisplayCard() }
             }
         }
     }

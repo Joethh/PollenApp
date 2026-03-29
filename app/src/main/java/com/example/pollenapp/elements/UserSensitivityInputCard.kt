@@ -20,9 +20,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.pollenapp.R
 import kotlin.math.roundToInt
 
 @Composable
@@ -43,12 +45,12 @@ fun UserSensitivityInputCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "How are you feeling?",
+                text = stringResource(R.string.how_are_you_feeling),
                 style = MaterialTheme.typography.titleMedium
             )
             
             Text(
-                text = "Rate your current sensitivity level",
+                text = stringResource(R.string.rate_your_current_sensitivity_level),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
@@ -79,8 +81,8 @@ fun UserSensitivityInputCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Low", style = MaterialTheme.typography.labelSmall)
-                Text("High", style = MaterialTheme.typography.labelSmall)
+                Text(stringResource(R.string.low), style = MaterialTheme.typography.labelSmall)
+                Text(stringResource(R.string.high), style = MaterialTheme.typography.labelSmall)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -90,7 +92,7 @@ fun UserSensitivityInputCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.medium
             ) {
-                Text("Submit Rating")
+                Text(stringResource(R.string.submit_rating))
             }
         }
     }

@@ -20,9 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.pollenapp.R
 
 data class SensitivityAlert (
     val rating: String,
@@ -56,7 +58,7 @@ fun SensitivityAlertCard(
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    text = "Predicted Sensitivity Rating: ${prediction.rating}",
+                    text = stringResource(R.string.predicted_sensitivity_rating, prediction.rating),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -75,7 +77,7 @@ fun SensitivityAlertCardPreview() {
         SensitivityAlertCard(
             prediction = SensitivityAlert(
                 rating = "High",
-                message = "Sensitivity levels are high today. Take precautions if you're spending time outdoors.",
+                message = "Predicted sensitivity levels are high today. Take precautions if you're spending time outdoors.",
                 colour = Color.Red,
                 icon = Icons.Outlined.Warning
             ),

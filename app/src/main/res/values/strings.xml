@@ -21,4 +21,22 @@
     <string name="low">Low</string>
     <string name="high">High</string>
     <string name="submit_rating">Submit Rating</string>
+    <string name="register">Register</string>
+    <string name="unknown">Unknown</string>
+    <string name="error">Error</string>
+    <string name="login_failed">Login failed</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="refreshing">Refreshing...</string>
+    <string name="loading">Loading...</string>
+    <string name="permission_denied_unknown">Permission Denied / Unknown</string>
+    <string name="predicted_sensitivity_levels_are_low">Predicted sensitivity levels are low. You are unlikely to notice symptoms today!</string>
+    <string name="predicted_sensitivity_levels_are_moderate">Predicted sensitivity levels are moderate. Consider taking precautions if you\'re going outdoors.</string>
+    <string name="predicted_sensitivity_levels_are_high">Predicted sensitivity levels are high today. Take precautions if you\'re spending time outdoors.</string>
+    <string name="alder">Alder</string>
+    <string name="birch">Birch</string>
+    <string name="grass">Grass</string>
+    <string name="mugwort">Mugwort</string>
+    <string name="olive">Olive</string>
+    <string name="ragweed">Ragweed</string>
+    <string name="medium">Medium</string>
 </resources>

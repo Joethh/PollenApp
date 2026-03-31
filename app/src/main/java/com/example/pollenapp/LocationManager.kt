@@ -40,10 +40,10 @@ class LocationManager(private val context: Context) {
                 val addresses = geocoder.getFromLocation(latLon[0], latLon[1], 1)
                 if (!addresses.isNullOrEmpty()) {
                     val address = addresses[0]
-                    "${address.subAdminArea ?: address.locality ?: "Unknown"}, ${address.countryCode}"
-                } else "Unknown"
+                    "${address.subAdminArea ?: address.locality ?: context.getString(R.string.unknown)}, ${address.countryCode}"
+                } else context.getString(R.string.unknown)
             } catch (e: IOException) {
-                "Error"
+                context.getString(R.string.error)
             }
         }
     }

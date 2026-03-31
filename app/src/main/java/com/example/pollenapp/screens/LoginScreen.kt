@@ -23,12 +23,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.pollenapp.elements.LoginField
 import com.example.pollenapp.elements.PasswordField
 import com.example.pollenapp.Credentials
 import com.example.pollenapp.LoginResult
 import com.example.pollenapp.LoginViewModel
+import com.example.pollenapp.R
 
 @Composable
 fun LoginScreen(
@@ -90,7 +92,7 @@ fun LoginScreen(
                     shape = RoundedCornerShape(5.dp),
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Login")
+                    Text(stringResource(R.string.login))
                 }
 
                 Button(
@@ -101,7 +103,7 @@ fun LoginScreen(
                     shape = RoundedCornerShape(5.dp),
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Register")
+                    Text(stringResource(R.string.register))
                 }
             }
         }

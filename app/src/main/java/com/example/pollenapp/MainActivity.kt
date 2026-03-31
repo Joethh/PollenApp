@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
             ) { permissions ->
                 val granted = permissions.values.all { it }
                 if (granted) {
-                    locationName = "Refreshing..."
+                    locationName = getString(R.string.refreshing)
                 }
             }
 
@@ -66,13 +66,13 @@ class MainActivity : ComponentActivity() {
             }
 
             LaunchedEffect(locationName) {
-                if (locationName == "Loading..." || locationName == "Refreshing...") {
+                if (locationName == getString(R.string.loading) || locationName == getString(R.string.refreshing)) {
                     val latLon = locationManager.getLatLon()
                     if (latLon != null) {
                         locationName = locationManager.getLocationString(latLon)
                         viewModel.fetchDataForLocation(latLon[0], latLon[1])
                     } else {
-                        locationName = "Permission Denied / Unknown"
+                        locationName = getString(R.string.permission_denied_unknown)
                     }
                 }
             }

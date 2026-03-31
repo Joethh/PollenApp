@@ -1,5 +1,6 @@
 package com.example.pollenapp
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Hiking
@@ -17,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
 
-class PollenRepository {
+class PollenRepository(private val context: Context) {
 
     private val retrofitInstance = RetroFitInstance()
     private val openMeteoApi = retrofitInstance.openMeteoApi
@@ -57,9 +58,9 @@ class PollenRepository {
                 val predictionScore = response.body()?.prediction ?: 0f
                 
                 val message = when {
-                    predictionScore < 3f -> "Predicted sensitivity levels are low. You are unlikely to notice symptoms today!"
-                    predictionScore < 8f -> "Predicted sensitivity levels are moderate. Consider taking precautions if you're going outdoors."
-                    else -> "Predicted sensitivity levels are high today. Take precautions if you're spending time outdoors."
+                    predictionScore < 3f -> context.getString(R.string.predicted_sensitivity_levels_are_low)
+                    predictionScore < 8f -> context.getString(R.string.predicted_sensitivity_levels_are_moderate)
+                    else -> context.getString(R.string.predicted_sensitivity_levels_are_high)
                 }
 
                 SensitivityAlert(
@@ -90,9 +91,9 @@ class PollenRepository {
                 val predictionScore = response.body()?.prediction ?: 0f
 
                 val message = when {
-                    predictionScore < 3f -> "Predicted sensitivity levels are low. You are unlikely to notice symptoms today!"
-                    predictionScore < 8f -> "Predicted sensitivity levels are moderate. Consider taking precautions if you're going outdoors."
-                    else -> "Predicted sensitivity levels are high today. Take precautions if you're spending time outdoors."
+                    predictionScore < 3f -> context.getString(R.string.predicted_sensitivity_levels_are_low)
+                    predictionScore < 8f -> context.getString(R.string.predicted_sensitivity_levels_are_moderate)
+                    else -> context.getString(R.string.predicted_sensitivity_levels_are_high)
                 }
 
                 SensitivityAlert(
@@ -117,12 +118,12 @@ class PollenRepository {
             val hourly = response.body()?.hourly ?: return emptyList()
 
             val allergens = listOf(
-                AllergenConfig("Alder", hourly.alderPollen),
-                AllergenConfig("Birch", hourly.birchPollen),
-                AllergenConfig("Grass", hourly.grassPollen),
-                AllergenConfig("Mugwort", hourly.mugwortPollen),
-                AllergenConfig("Olive", hourly.olivePollen),
-                AllergenConfig("Ragweed", hourly.ragweedPollen)
+                AllergenConfig(context.getString(R.string.alder), hourly.alderPollen),
+                AllergenConfig(context.getString(R.string.birch), hourly.birchPollen),
+                AllergenConfig(context.getString(R.string.grass), hourly.grassPollen),
+                AllergenConfig(context.getString(R.string.mugwort), hourly.mugwortPollen),
+                AllergenConfig(context.getString(R.string.olive), hourly.olivePollen),
+                AllergenConfig(context.getString(R.string.ragweed), hourly.ragweedPollen)
             )
 
             val dailyGrouped = hourly.time.mapIndexedNotNull { index, timeString ->
@@ -176,12 +177,12 @@ class PollenRepository {
             val hourly = response.body()?.hourly ?: return emptyList()
 
             val allergens = listOf(
-                AllergenConfig("Alder", hourly.alderPollen),
-                AllergenConfig("Birch", hourly.birchPollen),
-                AllergenConfig("Grass", hourly.grassPollen),
-                AllergenConfig("Mugwort", hourly.mugwortPollen),
-                AllergenConfig("Olive", hourly.olivePollen),
-                AllergenConfig("Ragweed", hourly.ragweedPollen)
+                AllergenConfig(context.getString(R.string.alder), hourly.alderPollen),
+                AllergenConfig(context.getString(R.string.birch), hourly.birchPollen),
+                AllergenConfig(context.getString(R.string.grass), hourly.grassPollen),
+                AllergenConfig(context.getString(R.string.mugwort), hourly.mugwortPollen),
+                AllergenConfig(context.getString(R.string.olive), hourly.olivePollen),
+                AllergenConfig(context.getString(R.string.ragweed), hourly.ragweedPollen)
             )
 
             val now = LocalDateTime.now()
@@ -257,17 +258,17 @@ class PollenRepository {
 
     private fun sensitivityRating(score : Float): String {
         return when {
-            score < 3f -> "Low"
-            score < 8f -> "Medium"
-            else -> "High"
+            score < 3f -> context.getString(R.string.low)
+            score < 8f -> context.getString(R.string.medium)
+            else -> context.getString(R.string.high)
         }
     }
 
     private fun pollenRating(score : Float): String {
         return when {
-            score < 50f -> "Low"
-            score < 150f -> "Medium"
-            else -> "High"
+            score < 50f -> context.getString(R.string.low)
+            score < 150f -> context.getString(R.string.medium)
+            else -> context.getString(R.string.high)
         }
     }
 }

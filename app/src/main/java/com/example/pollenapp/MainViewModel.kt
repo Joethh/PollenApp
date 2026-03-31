@@ -1,5 +1,7 @@
 package com.example.pollenapp
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pollenapp.elements.AllergenItem
@@ -10,9 +12,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {  // Change 1
 
-    private val pollenRepository = PollenRepository()
+    private val pollenRepository = PollenRepository(application)
 
     private val _allergens = MutableStateFlow<List<AllergenItem>>(emptyList())
     val allergens: StateFlow<List<AllergenItem>> = _allergens.asStateFlow()

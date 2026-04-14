@@ -1,8 +1,9 @@
-package com.example.pollenapp
+package com.example.pollenapp.api
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
+import com.example.pollenapp.R
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -36,6 +37,7 @@ class LocationManager(private val context: Context) {
         return withContext(Dispatchers.IO) {
             try {
                 val geocoder = Geocoder(context)
+
                 @Suppress("DEPRECATION")
                 val addresses = geocoder.getFromLocation(latLon[0], latLon[1], 1)
                 if (!addresses.isNullOrEmpty()) {

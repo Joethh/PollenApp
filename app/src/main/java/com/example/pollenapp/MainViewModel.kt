@@ -2,8 +2,8 @@ package com.example.pollenapp
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pollenapp.data.PollenRepository
 import com.example.pollenapp.elements.AllergenItem
 import com.example.pollenapp.elements.Forecast
 import com.example.pollenapp.elements.SensitivityAlert

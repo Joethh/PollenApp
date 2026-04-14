@@ -1,4 +1,4 @@
-package com.example.pollenapp
+package com.example.pollenapp.data
 
 import android.content.Context
 import android.util.Log
@@ -11,6 +11,8 @@ import androidx.compose.material.icons.outlined.SentimentSatisfiedAlt
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.pollenapp.R
+import com.example.pollenapp.api.RetroFitInstance
 import com.example.pollenapp.elements.AllergenItem
 import com.example.pollenapp.elements.Forecast
 import com.example.pollenapp.elements.SensitivityAlert
@@ -43,7 +45,7 @@ class PollenRepository(private val context: Context) {
         return try {
             // Get current Firebase Auth Token
             val token = auth.currentUser?.getIdToken(false)?.await()?.token ?: return null
-            
+
             // Map current pollen levels to request model
             val requestBody = PollenUpdateRequest(
                 pollenLevels = allergens.map { it.score },
@@ -53,19 +55,13 @@ class PollenRepository(private val context: Context) {
             // Call API
             val response = customApi.updateAndGetDiscomfortScore("Bearer $token", requestBody)
             Log.d("API", "Got Prediction-Update Response: $response")
-            
+
             if (response.isSuccessful) {
                 val predictionScore = response.body()?.prediction ?: 0f
-                
-                val message = when {
-                    predictionScore < 3f -> context.getString(R.string.predicted_sensitivity_levels_are_low)
-                    predictionScore < 8f -> context.getString(R.string.predicted_sensitivity_levels_are_moderate)
-                    else -> context.getString(R.string.predicted_sensitivity_levels_are_high)
-                }
 
                 SensitivityAlert(
                     rating = sensitivityRating(predictionScore),
-                    message = message,
+                    message = sensitivityMessage(predictionScore),
                     colour = pollenColor(predictionScore),
                     icon = pollenIcon(predictionScore)
                 )
@@ -90,15 +86,9 @@ class PollenRepository(private val context: Context) {
             if (response.isSuccessful) {
                 val predictionScore = response.body()?.prediction ?: 0f
 
-                val message = when {
-                    predictionScore < 3f -> context.getString(R.string.predicted_sensitivity_levels_are_low)
-                    predictionScore < 8f -> context.getString(R.string.predicted_sensitivity_levels_are_moderate)
-                    else -> context.getString(R.string.predicted_sensitivity_levels_are_high)
-                }
-
                 SensitivityAlert(
                     rating = sensitivityRating(predictionScore),
-                    message = message,
+                    message = sensitivityMessage(predictionScore),
                     colour = pollenColor(predictionScore),
                     icon = sensitivityIcon(predictionScore)
                 )
@@ -154,7 +144,8 @@ class PollenRepository(private val context: Context) {
                     val overallScore = maxAllergenValues.maxOrNull() ?: 0f
 
                     Forecast(
-                        dayStr = date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() },
+                        dayStr = date.dayOfWeek.name.lowercase()
+                            .replaceFirstChar { it.uppercase() },
                         month = date.month.name.lowercase().replaceFirstChar { it.uppercase() },
                         dayInt = date.dayOfMonth,
                         score = overallScore,
@@ -269,6 +260,14 @@ class PollenRepository(private val context: Context) {
             score < 50f -> context.getString(R.string.low)
             score < 150f -> context.getString(R.string.medium)
             else -> context.getString(R.string.high)
+        }
+    }
+
+    private fun sensitivityMessage(score : Float): String {
+        return when {
+            score < 3f -> context.getString(R.string.predicted_sensitivity_levels_are_low)
+            score < 8f -> context.getString(R.string.predicted_sensitivity_levels_are_moderate)
+            else -> context.getString(R.string.predicted_sensitivity_levels_are_high)
         }
     }
 }

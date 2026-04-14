@@ -1,5 +1,8 @@
-package com.example.pollenapp
+package com.example.pollenapp.api
 
+import com.example.pollenapp.data.DiscomfortResponse
+import com.example.pollenapp.data.OpenMeteoResponse
+import com.example.pollenapp.data.PollenRepository
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

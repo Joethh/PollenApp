@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.pollenapp.elements.LoginField
 import com.example.pollenapp.elements.PasswordField
-import com.example.pollenapp.Credentials
+import com.example.pollenapp.data.Credentials
 import com.example.pollenapp.LoginResult
 import com.example.pollenapp.LoginViewModel
 import com.example.pollenapp.R

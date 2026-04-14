@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.example.pollenapp.api.LocationManager
 import com.example.pollenapp.screens.MainScreen
 
 class MainActivity : ComponentActivity() {

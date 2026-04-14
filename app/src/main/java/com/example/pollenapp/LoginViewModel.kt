@@ -1,6 +1,7 @@
 package com.example.pollenapp
 
 import androidx.lifecycle.ViewModel
+import com.example.pollenapp.data.Credentials
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

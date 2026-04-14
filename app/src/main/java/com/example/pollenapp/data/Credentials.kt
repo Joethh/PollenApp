@@ -1,5 +1,4 @@
-package com.example.pollenapp
-
+package com.example.pollenapp.data
 
 data class Credentials(
     var login: String = "",
